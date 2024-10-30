@@ -61,11 +61,3 @@ python noise.py --test
   ```bash
   python noise.py --test
   ```
-
-## Team Members
-- Adam Bawatneh
-- Brian Conn
-- Jeffrey Chang
-- Muzamil Shamsi
-- Soham Ganguly
-- Xander Economou
