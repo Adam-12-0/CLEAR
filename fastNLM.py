@@ -167,14 +167,14 @@ def process_video(input_video_path, output_video_path, **kwargs):
     print(f"Average VIF: {avg_vif:.4f}")
     print(f"Average Processing Time per Frame: {avg_processing_time:.4f} seconds")
 
-    csv_path = "metrics.csv",
-
-    csv_exists = os.path.isfile(csv_path)
+    csv_path = "metrics.csv"
+    csv_exists = os.path.exists(csv_path)
     with open(csv_path, mode='a', newline='') as file:
         writer = csv.writer(file)
         # Write header if file doesn't exist
         if not csv_exists:
             writer.writerow(["Input Video", "Output Video", "Avg PSNR", "Avg SSIM", "Avg VIF", "Avg Processing Time"])
+        
         # Write metrics row
         writer.writerow([input_video_path, output_video_path, f"{avg_psnr:.2f}", f"{avg_ssim:.4f}", f"{avg_vif:.4f}", f"{avg_processing_time:.4f}"])
 
