@@ -324,6 +324,14 @@ def parse_args():
     	help='Enable 2d flow guide layer (0 - disable, 1 - generate flow from noisy videos, 2 - use flow from UCF-101_flow).',
         default=0
     )
+    
+    parser.add_argument(
+    	'-l', '--limit',
+        metavar='INT',
+        type=int,
+    	help='Image count limit per category and per noise type (0 for no limit).',
+        default=0
+    )
 
     args = parser.parse_args()
 
@@ -349,16 +357,20 @@ def main():
             # Assuming video path is in the first column (index 0)
             skip_videos = [row[0] for row in reader]
 
+    path_dict = {}
     skip_count = 0
     video_paths = []
     for root, dirs, files in os.walk(args.input):
         for file in files:
             if file.endswith(('.avi', '.mp4')):
                 file_path = os.path.join(root, file)
-                if file_path not in skip_videos:
-                    video_paths.append(file_path)
-                else:
-                    skip_count += 1
+                video_count = path_dict.get(root, 0) + 1
+                path_dict[root] = video_count
+                if video_count < args.limit or args.limit <= 0:
+                    if file_path not in skip_videos:
+                        video_paths.append(file_path)
+                    else:
+                        skip_count += 1
 
     if skip_count > 0:
         print(f"Skipping {skip_count} videos due to being processed in a previous run...\n")
