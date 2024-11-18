@@ -65,12 +65,12 @@ def calculate_vif(clean, denoised):
     vif_score = vif_loss(clean_tensor, denoised_tensor).item()
     return vif_score
 
-def evaluate_denoising_metrics(noisy_video_path, avg_frame_time, args):
-    if not os.path.exists(noisy_video_path):
-        print(f"Error: Noisy video not found at {noisy_video_path}")
+def evaluate_denoising_metrics(denoised_video_path, avg_frame_time, args):
+    if not os.path.exists(denoised_video_path):
+        print(f"Error: Denoised video not found at {denoised_video_path}")
         return None
 
-    path_parts = noisy_video_path.split('/')
+    path_parts = denoised_video_path.split('/')
     noise_type = path_parts[2].split('-')[-1] # e.g. "SaltPepper"
     category = path_parts[3]                     # e.g. "PizzaTossing"
     filename = path_parts[4]                     # e.g. "v_PizzaTossing_g01_c01.avi"
@@ -81,7 +81,7 @@ def evaluate_denoising_metrics(noisy_video_path, avg_frame_time, args):
         return None
 
     cap_original = cv2.VideoCapture(original_video_path)
-    cap_noisy = cv2.VideoCapture(noisy_video_path)
+    cap_noisy = cv2.VideoCapture(denoised_video_path)
 
     if not cap_original.isOpened() or not cap_noisy.isOpened():
         print("Error: Could not open video file(s).")
@@ -242,7 +242,8 @@ def main():
 
             for video_path, avg_frame_time in video_to_avg_frame_time.items():
                 # Submit each task to the thread pool
-                futures.append(executor.submit(worker_thread, video_path, avg_frame_time, args, noise_type_metrics, writer, lock))
+               	denoised_path = video_path.replace("./output/", args.denoised)
+                futures.append(executor.submit(worker_thread, denoised_path, avg_frame_time, args, noise_type_metrics, writer, lock))
 
             # Wait for all threads to complete
             for future in concurrent.futures.as_completed(futures):
