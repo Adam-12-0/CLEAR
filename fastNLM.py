@@ -12,7 +12,7 @@ import argparse
 import csv
 
 # %%
-def denoise_fastnlm(frame, h=25, hColor=20, templateWindowSize=11, searchWindowSize=25):
+def denoise_fastnlm(frame, h, hColor, templateWindowSize, searchWindowSize):
     """
     Applies Fast Non-Local Means Denoising to a video frame.
 
@@ -29,7 +29,11 @@ def denoise_fastnlm(frame, h=25, hColor=20, templateWindowSize=11, searchWindowS
     if frame.dtype != 'uint8' or len(frame.shape) != 3 or frame.shape[2] != 3:
         frame = cv2.convertScaleAbs(frame)
 
-    denoised_frame = cv2.fastNlMeansDenoisingColored(
+    gpu_frame = cv2.cuda_GpuMat()
+    gpu_frame.upload(frame)
+
+    # Apply GPU denoising 
+    denoised_frame = cv2.cuda.fastNlMeansDenoisingColored(
         frame,
         None,
         h,
@@ -38,17 +42,6 @@ def denoise_fastnlm(frame, h=25, hColor=20, templateWindowSize=11, searchWindowS
         searchWindowSize
     )
 
-    '''
-    print("Type:", type(denoised_frame))
-    print("Data Type:", denoised_frame.dtype)
-    print("Shape:", denoised_frame.shape)
-
-     # Convert to RGB for display
-    #denoised_frame_rgb = cv2.cvtColor(denoised_frame, cv2.COLOR_BGR2RGB)
-    plt.imshow(denoised_frame)
-    plt.axis('off')
-    plt.show()
-    '''
     return denoised_frame
 # %%
 def calculate_psnr(clean, denoised):
@@ -116,7 +109,7 @@ def process_video(input_video_path, output_video_path, **kwargs):
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter(output_video_path, fourcc, fps, (width, height))
+    #out = cv2.VideoWriter(output_video_path, fourcc, fps, (width, height))
     
     psnr_values, ssim_values, vif_values = [], [], []
     processing_times = []
@@ -132,11 +125,11 @@ def process_video(input_video_path, output_video_path, **kwargs):
         # Get parameters 
         h = kwargs.get('h', 10)
         hColor = kwargs.get('hColor', 10)
-        templateWindowSize = kwargs.get('templateWindowSize', 11)
-        searchWindowSize = kwargs.get('searchWindowSize', 25)
+        templateWindowSize = kwargs.get('templateWindowSize', 7)
+        searchWindowSize = kwargs.get('searchWindowSize', 21)
 
         # Apply the chosen filter
-        denoised_frame = denoise_fastnlm(frame, h=25, hColor=20, templateWindowSize=11, searchWindowSize=25)
+        denoised_frame = denoise_fastnlm(frame, h, hColor, templateWindowSize, searchWindowSize)
 
         end_time = time.time()
         '''print(f'original frame size {original_frame.shape}')
@@ -150,10 +143,10 @@ def process_video(input_video_path, output_video_path, **kwargs):
         processing_times.append(end_time - start_time)
         
         # Write the denoised frame to output video
-        out.write(denoised_frame)
+        #out.write(denoised_frame)
     
     cap.release()
-    out.release()
+    #out.release()
     
     # Calculate average metrics
     avg_psnr = np.mean(psnr_values)
@@ -167,7 +160,7 @@ def process_video(input_video_path, output_video_path, **kwargs):
     print(f"Average VIF: {avg_vif:.4f}")
     print(f"Average Processing Time per Frame: {avg_processing_time:.4f} seconds")
 
-    csv_path = "metrics.csv"
+    csv_path = "metrics_2.csv"
     csv_exists = os.path.exists(csv_path)
     with open(csv_path, mode='a', newline='') as file:
         writer = csv.writer(file)
@@ -202,19 +195,6 @@ def process_directory(input_dir, output_dir, **kwargs):
                 # Process each video
                 process_video(input_video_path, output_video_path, **kwargs)
 
-'''
-input_gaussian = '/home/ad/ru501950/workspace/CAP5415/UCF101/noisy_out/UCF-101-Gaussian'
-output_gaussian = '/home/ad/ru501950/workspace/CAP5415/UCF101/denoised/UCF-101-Gaussian'
-
-input_poisson = '/home/ad/ru501950/workspace/CAP5415/UCF101/noisy_out/UCF-101-Poisson'
-output_poison = '/home/ad/ru501950/workspace/CAP5415/UCF101/denoised/UCF-101-Poisson'
-
-input_saltpepper = '/home/ad/ru501950/workspace/CAP5415/UCF101/noisy_out/UCF-101-SaltPepper'
-output_saltpepper = '/home/ad/ru501950/workspace/CAP5415/UCF101/denoised/UCF-101-SaltPepper'
-
-input_Speckle = '/home/ad/ru501950/workspace/CAP5415/UCF101/noisy_out/UCF-101-Speckle'
-output_Speckle = '/home/ad/ru501950/workspace/CAP5415/UCF101/denoised/UCF-101-Speckle'
-'''
 # %%
 def main():
     parser = argparse.ArgumentParser(description="Video Denoising with Median and Bilateral Filters")
@@ -222,11 +202,14 @@ def main():
     # General arguments
     parser.add_argument("input_dir", type=str, help="Path to the input directory containing videos.")
     parser.add_argument("output_dir", type=str, help="Path to the output directory for saving denoised videos.")
+    
     # Optional fast non-Local means arguments
+    #RUN1: 10-10-11-25, metrics.csv, /denoisedVidsDefParas/
+    #RUN2: 10-10-7-21, mecrics_2.csv, /denoisedVideos-10-10-7-21/
     parser.add_argument("--h", type=int, default=10, help="Regulates the filter strength for luminance.")
     parser.add_argument("--hColor", type=int, default=10, help="Regulates the filter strength for color.")
-    parser.add_argument("--templateWindowSize", type=int, default=11, help="Size in pixels of the template patch.") # must be odd
-    parser.add_argument("--searchWindowSize", type=int, default=25, help="Size in pixels of the window used to search for patches.") #must be odd
+    parser.add_argument("--templateWindowSize", type=int, default=7, help="Size in pixels of the template patch.") # must be odd
+    parser.add_argument("--searchWindowSize", type=int, default=21, help="Size in pixels of the window used to search for patches.") #must be odd
     '''
         h (int): Parameter regulating filter strength for luminance.
         hColor (int): Parameter regulating filter strength for color.
