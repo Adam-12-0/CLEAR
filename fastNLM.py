@@ -29,11 +29,11 @@ def denoise_fastnlm(frame, h, hColor, templateWindowSize, searchWindowSize):
     if frame.dtype != 'uint8' or len(frame.shape) != 3 or frame.shape[2] != 3:
         frame = cv2.convertScaleAbs(frame)
 
+    # denoise using gpu
     gpu_frame = cv2.cuda_GpuMat()
     gpu_frame.upload(frame)
 
-    # Apply GPU denoising 
-    denoised_frame = cv2.cuda.fastNlMeansDenoisingColored(
+    denoised_gpu = cv2.cuda.fastNlMeansDenoisingColored(
         frame,
         None,
         h,
@@ -41,6 +41,12 @@ def denoise_fastnlm(frame, h, hColor, templateWindowSize, searchWindowSize):
         templateWindowSize,
         searchWindowSize
     )
+    
+    denoised_frame = denoised_gpu.download() # download to cpu
+
+    # free memory in gpu
+    gpu_frame.release()
+    denoised_gpu.release()
 
     return denoised_frame
 # %%
