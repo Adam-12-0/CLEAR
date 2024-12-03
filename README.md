@@ -7,7 +7,7 @@ CLEAR (Comparative Learning and Evaluation of AI and Traditional Denoisers) is a
 - **Adam Bawatneh**: Project Manager & Noise Injection Lead
 - **Scott Spicer**: Fast Non-Local Means Denoising
 - **Zengyan Wang**: Median Filtering and Bilateral Filtering
-- **Jacob Braun**: FFDNet AI Denoiser
+- **Jacob Braun**: VRT AI Denoiser
 - **Martin Dinkov**: NVIDIA OptiX AI-Accelerated Denoiser
 
 ## Denoising Techniques
@@ -15,7 +15,7 @@ We are evaluating the following denoising techniques:
 1. **Fast Non-Local Means Denoising (fastNlMeansDenoisingColored)**
 2. **Median Filtering (medianBlur)**
 3. **Bilateral Filtering (bilateralFilter)**
-4. **FFDNet (Fast and Flexible Denoising Convolutional Neural Network)**
+4. **VRT (Video Restoration Transformer)**
 5. **NVIDIA OptiX AI-Accelerated Denoiser**
 
 ## Noise Types Injected
@@ -37,4 +37,4 @@ Please download and extract the dataset to a suitable directory on your system.
 Clone the repository from GitHub:
 
 ```bash
-git clone https://github.com/Adam-12-0/CLEAR-Denoising-Project.git
+git clone https://github.com/Adam-12-0/CLEAR.git
