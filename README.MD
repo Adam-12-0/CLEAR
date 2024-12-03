@@ -12,10 +12,10 @@ CLEAR (Comparative Learning and Evaluation of AI and Traditional Denoisers) is a
 
 ## Denoising Techniques
 We are evaluating the following denoising techniques:
-1. **VRT Denoising (Video Restoration Transformer)**
+1. **Fast Non-Local Means Denoising (fastNlMeansDenoisingColored)**
 2. **Median Filtering (medianBlur)**
 3. **Bilateral Filtering (bilateralFilter)**
-4. **FFDNet (Fast and Flexible Denoising Convolutional Neural Network)**
+4. **VRT (Video Restoration Transformer)**
 5. **NVIDIA OptiX AI-Accelerated Denoiser**
 
 ## Noise Types Injected
