@@ -1,4 +1,5 @@
 # CLEAR - Comparative Learning and Evaluation of AI and Traditional Denoisers
+# These directions are for running the VRT branch
 
 ## Overview
 CLEAR (Comparative Learning and Evaluation of AI and Traditional Denoisers) is a project that compares various traditional and AI-based video denoising techniques using the UCF-101 dataset. The project aims to determine the optimal balance between denoising quality and computational efficiency across different types of video noise.
@@ -34,12 +35,9 @@ Please download and extract the dataset to a suitable directory on your system.
 ## Setup Instructions
 
 ### Step 1: Clone the Repository
-Clone the repository from GitHub:
+Clone the repository from GitHub and run the python file:
 
 ```bash
 git clone https://github.com/Adam-12-0/CLEAR-Denoising-Project.git
 
-Run the python file.
-
-```bash
 python main_test_vrt.py
