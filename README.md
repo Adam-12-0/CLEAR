@@ -8,7 +8,7 @@ This branch contains the code to inject various types of noise into the UCF-101 
 First, clone the repository and switch to the `noise` branch:
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Adam-12-0/CLEAR.git
 cd CLEAR
 git checkout noise
 ```
