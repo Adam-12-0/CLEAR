@@ -10,12 +10,12 @@ VRT is implemented in this repo: https://github.com/JingyunLiang/VRT
 - **Adam Bawatneh**: Project Manager & Noise Injection Lead
 - **Scott Spicer**: Fast Non-Local Means Denoising
 - **Zengyan Wang**: Median Filtering and Bilateral Filtering
-- **Jacob Braun**: FFDNet AI Denoiser
+- **Jacob Braun**: VRT AI Denoiser
 - **Martin Dinkov**: NVIDIA OptiX AI-Accelerated Denoiser
 
 ## Denoising Techniques
 We are evaluating the following denoising techniques:
-1. **Fast Non-Local Means Denoising (fastNlMeansDenoisingColored)**
+1. **VRT Denoising (Video Restoration Transformer)**
 2. **Median Filtering (medianBlur)**
 3. **Bilateral Filtering (bilateralFilter)**
 4. **FFDNet (Fast and Flexible Denoising Convolutional Neural Network)**
