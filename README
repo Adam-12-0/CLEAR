@@ -1,8 +1,0 @@
-# Install dependencies
-pip install -r requriements.txt
-
-# Median filter and parameters
-python Median_bilateral_denoiser.py -input_dir /path/to/noisy/videos/ -output_dir /path/to/save/ -filter_type 'median' --kernel_size 3
-
-# Bilateral filter and parameters
-python Median_bilateral_denoiser.py -input_dir /path/to/noisy/videos/ -output_dir /path/to/save/ -filter_type 'bilateral' --d 9 --sigma_color 75 --sigma_space 75
