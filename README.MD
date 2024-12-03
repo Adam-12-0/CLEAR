@@ -1,5 +1,4 @@
 # CLEAR - Comparative Learning and Evaluation of AI and Traditional Denoisers
-# These directions are for running the VRT branch
 
 ## Overview
 CLEAR (Comparative Learning and Evaluation of AI and Traditional Denoisers) is a project that compares various traditional and AI-based video denoising techniques using the UCF-101 dataset. The project aims to determine the optimal balance between denoising quality and computational efficiency across different types of video noise.
