@@ -38,3 +38,8 @@ Clone the repository from GitHub:
 
 ```bash
 git clone https://github.com/Adam-12-0/CLEAR-Denoising-Project.git
+
+Run the python file.
+
+```bash
+python main_test_vrt.py
