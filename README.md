@@ -4,6 +4,8 @@
 ## Overview
 CLEAR (Comparative Learning and Evaluation of AI and Traditional Denoisers) is a project that compares various traditional and AI-based video denoising techniques using the UCF-101 dataset. The project aims to determine the optimal balance between denoising quality and computational efficiency across different types of video noise.
 
+VRT is implemented in this repo: https://github.com/JingyunLiang/VRT
+
 ## Project Members
 - **Adam Bawatneh**: Project Manager & Noise Injection Lead
 - **Scott Spicer**: Fast Non-Local Means Denoising
