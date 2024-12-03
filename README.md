@@ -1,63 +1,92 @@
-# Noise Injection for UCF-101 Dataset
 
-This branch contains the code to inject various types of noise into the UCF-101 video dataset for further denoising analysis.
+# OptiX Denoising for UCF-101 Dataset
+
+This branch contains the scripts necessary to denoise a noisy dataset. For instructions on injecting noise, refer to the `noise-injection` branch.
+
+---
+
+## Prerequisites
+
+### 1. NVIDIA GPU (Pascal or Newer)
+- A GPU supporting CUDA and OptiX is required.
+- **Tested with:** GTX 1080Ti, RTX 2080.
+
+### 2. Linux Environment
+- This project must run on Linux due to missing DLL libraries on Windows.
+- **Tested OS:** Ubuntu 24.04.
+
+### 3. Latest NVIDIA Driver
+- Ensure you have the latest NVIDIA driver for optimal performance.
+- **Tested version:** 566.03.
+
+### 4. CUDA
+- Required for the OptiX SDK.
+- **Tested version:** CUDA 12.6.2.
+
+### 5. OptiX SDK (Version 7.6 or Newer)
+- Required to build and run the PyOptiX library.
+- **Tested version:** OptiX 8.0.
+
+### 6. PyOptiX Library
+- Must be built and installed locally.
+- For detailed instructions, see the [PyOptiX GitHub repository](https://github.com/NVIDIA/otk-pyoptix).
+
+---
 
 ## Setup Instructions
 
 ### 1. Clone the Repository
-First, clone the repository and switch to the `noise` branch:
-
 ```bash
 git clone <your-repo-url>
 cd CLEAR
-git checkout noise
+git checkout optix-denoise
 ```
 
-### 2. Setup the Conda Environment
-Create and activate a new conda environment called `CLEAR`:
-
-```bash
-conda create -n CLEAR python=3.8
-conda activate CLEAR
-```
+### 2. Download UCF-101 Dataset and Inject Noise
+- Follow the instructions in the `noise-injection` branch README.
+- A copy of the `noise.py` script is also included in this branch.
 
 ### 3. Install Dependencies
-Install the required Python libraries, including OpenCV, NumPy, and others:
-
+Install required Python libraries:
 ```bash
-pip install opencv-python-headless numpy
+pip install opencv-python cupy numpy argparse tqdm piq scikit-image torchvision
 ```
 
-### 4. Place Dataset in the Correct Directory
-- Download the UCF-101 dataset from [here](https://www.crcv.ucf.edu/data/UCF101/UCF101.rar).
-- Extract the dataset and place it in the root folder of the project, so that the path is `./UCF-101/`.
-
-### 5. Run the Noise Injection Script
-To inject noise into the dataset, use the following command:
-
+### 4. Generate Flow Maps
+- Pre-generate flow maps from the clear UCF-101 dataset before running `optix_denoise.py` with the `--flow 2` flag.
+- Ensure the clean UCF-101 dataset is available.
+- The flow maps will be saved in the `UCF-101_flow` directory.
 ```bash
-python noise.py
+python gen_flow.py
 ```
 
-For a test run, use the following command to process only a single action category:
+---
 
+## Running Instructions
+
+To denoise the noisy dataset (stored in the `output` directory):
 ```bash
-python noise.py --test
+python optix_denoise.py --flow 2
 ```
+- **Indirect temporal denoising** will improve visual quality (enabled via --flow 2 option).
+- **Output:** Denoised videos are saved in the `output_optix` directory.
+- **Metrics:** Performance metrics are stored in `performance.csv`.
+
+---
+
+## Post-Processing
+
+To compute the quality metrics of the denoised output and integrate performance metrics:
+```bash
+python calculate_metrics.py
+```
+- **Output:** Final metrics are saved in `metrics.csv`.
+
+---
 
 ## Notes
-- The dataset will be processed into four different noisy versions: Gaussian, Salt & Pepper, Poisson, and Speckle.
-- Each type of noise will be saved in a separate folder named `UCF-101-(Noise Type)`.
-
-## Command to Run the Script
-- **To run the script and generate the noisy datasets**:
-
-  ```bash
-  python noise.py
-  ```
-
-- **If you are performing a test run**:
-
-  ```bash
-  python noise.py --test
-  ```
+- Metrics and performance directories store results generated with various temporal and tiling denoising options.
+- For a complete list of options, run:
+```bash
+python optix_denoise.py --help
+```
