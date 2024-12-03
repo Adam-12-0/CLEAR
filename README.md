@@ -18,7 +18,7 @@ We are evaluating the following denoising techniques:
 1. **Fast Non-Local Means Denoising (fastNlMeansDenoisingColored)**
 2. **Median Filtering (medianBlur)**
 3. **Bilateral Filtering (bilateralFilter)**
-4. **VRT**
+4. **VRT (Video Restoration Transformer)**
 5. **NVIDIA OptiX AI-Accelerated Denoiser**
 
 ## Noise Types Injected
