@@ -1,0 +1,11 @@
+clean_dataset_choices = './UCF-101/'
+
+noisy_datasets_choises = {
+    'Gaussian': './denoisedVideosFastNLM_10_10_3_13/UCF-101-Gaussian/',
+    'SaltPepper': './denoisedVideosFastNLM_10_10_3_13/UCF-101-SaltPepper/',
+    'Poisson': './denoisedVideosFastNLM_10_10_3_13/UCF-101-Poisson/',
+    'Speckle': './denoisedVideosFastNLM_10_10_3_13/UCF-101-Speckle/',
+}
+
+'clean' is original video.
+'noisy' is the denoised video from fast non-local means.
