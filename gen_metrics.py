@@ -63,10 +63,10 @@ def main(test=False, noise="Gaussian"):
     
     clean_dataset_choices = './UCF-101/'
     noisy_datasets_choises = {
-        'Gaussian': './denoisedVideosFastNLM_10_10_3_13/UCF-101-Gaussian/',
-        'SaltPepper': './denoisedVideosFastNLM_10_10_3_13/UCF-101-SaltPepper/',
-        'Poisson': './denoisedVideosFastNLM_10_10_3_13/UCF-101-Poisson/',
-        'Speckle': './denoisedVideosFastNLM_10_10_3_13/UCF-101-Speckle/',
+        'Gaussian': './denoisedVideosFastNLM/UCF-101-Gaussian/',
+        'SaltPepper': './denoisedVideosFastNLM/UCF-101-SaltPepper/',
+        'Poisson': './denoisedVideosFastNLM/UCF-101-Poisson/',
+        'Speckle': './denoisedVideosFastNLM/UCF-101-Speckle/',
     }
     if noise not in noisy_datasets_choises:
         raise Exception("not a valid noise type. Choices: Gaussian, SaltPepper, Poisson, Speckle")
@@ -75,8 +75,8 @@ def main(test=False, noise="Gaussian"):
     noisy_datasets[noise] = noisy_datasets_choises[noise]
     clean_dataset_path = clean_dataset_choices #clean_dataset_choices[noise]
     
-    output_csv_path = f"./metrics2/{noise}/metrics_summary.csv"
-    metrics_folder = f"./metrics2/{noise}/"
+    output_csv_path = f"./metrics/{noise}/metrics_summary.csv"
+    metrics_folder = f"./metrics/{noise}/"
 
     # Ensure metrics folder is created
     os.makedirs(metrics_folder, exist_ok=True)
