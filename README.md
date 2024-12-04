@@ -37,7 +37,7 @@ python fastNLM.py output/ denoisedVideosFastNLM/ --h 10 --hColor 10 --templateWi
 ```
 - **Noisy Path:** Path the noise injected videos (Required).
 - **Denoised Path:** Path the the denoised videos are written to (Required).   
-  - Make 'denoisedVideosFastNLM/' or edit gen_metrics.py script to reflect new path (lines 66 t0 69).
+  - Make 'denoisedVideosFastNLM/' or edit gen_metrics.py script to reflect new path (lines 66 to 69).
 - **h:** Regulates the filter strength for luminance (Optional flag, default is 10).
 - **hColor:** Regulates the filter strength for color (Optional flag, default is 10).
 - **templateWindowSize:** Size in pixels of the template patch (Optional flag, default is 7).
@@ -51,8 +51,13 @@ To compute the quality metrics of the denoised output and integrate performance 
 ```bash
 python gen_metrics.py
 ```
-- **Output:** Final metrics are saved in `metrics.csv`.
+- **Output:** Final metrics are saved in `./metrics/{noise}/metrics_summary.csv`.
 
+To create the plots for the metrics:
+```bash
+python plot_metrics.py
+```
+- **Output:** Final plots are saved in `./metrics/graphs/{noise}/`.
 ---
 
 ## Notes
