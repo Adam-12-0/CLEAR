@@ -13,7 +13,7 @@ This branch contains the scripts necessary to denoise a noisy dataset. For instr
 
 ### 1. Clone the Repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Adam-12-0/CLEAR.git
 cd CLEAR
 git checkout fastNLM
 ```
