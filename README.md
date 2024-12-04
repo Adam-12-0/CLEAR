@@ -40,6 +40,6 @@ Please download and extract the dataset to a suitable directory on your system.
 Clone the repository from GitHub and run the python file:
 
 ```bash
-git clone https://github.com/Adam-12-0/CLEAR-Denoising-Project.git
+git clone https://github.com/Adam-12-0/CLEAR.git
 
 python main_test_vrt.py
